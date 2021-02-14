@@ -14,3 +14,10 @@ will automatically connect to the primary. Increasing the number of sentinel
 instances must be done in coordination with the QUORUM environment variable to
 prevent split brain. You should have `floor(n/2) + 1` sentinel instances
 available for quorum.
+
+Both redis and sentinel instances rely on `endpoint_mode: dnsrr` to
+identify other replicas and connect to the correct one.
+
+The sentinel and redis services can be accessed by your application inside the
+same stack. Accessing redis from outside your cluster will likely require an
+ingress proxy or tcp binding `mode: host`.
