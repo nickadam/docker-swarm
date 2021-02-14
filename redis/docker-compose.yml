@@ -42,6 +42,24 @@ services:
       endpoint_mode: dnsrr
       placement:
         max_replicas_per_node: 1
+  web:
+    image: sample-app
+    build:
+      context: ./sample-app
+    init: true
+    environment:
+      REDIS_PORT: 6379
+      SENTINEL_NAME: sentinel
+      SENTINEL_PORT: 26379
+      PASSWORD_FILE: /run/secrets/redis_password
+      INSTANCE_NAME: mycluster
+    ports:
+      - target: 80
+        published: 8080
+        protocol: tcp
+        mode: host
+    secrets:
+      - redis_password
 volumes:
   rdb:
 secrets:
